@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Agro Waste to AI – Circular Economy</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #e8f5e9, #f1f8e9);
+        }
+
+        header {
+            background: #2e7d32;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 28px;
+        }
+
+        header p {
+            margin-top: 8px;
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 30px auto;
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+
+        .upload-box {
+            border: 2px dashed #4caf50;
+            padding: 25px;
+            text-align: center;
+            border-radius: 10px;
+            background: #f9fff9;
+        }
+
+        input[type="file"], input[type="text"] {
+            margin-top: 15px;
+            padding: 10px;
+            width: 80%;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            margin-top: 20px;
+            padding: 12px 25px;
+            background: #4caf50;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #388e3c;
+        }
+
+        .result {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f1f8e9;
+            border-radius: 10px;
+        }
+
+        .result h2 {
+            color: #2e7d32;
+            margin-bottom: 10px;
+        }
+
+        .result img {
+            width: 100%;
+            max-width: 300px;
+            border-radius: 8px;
+            margin: 15px 0;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+        }
+
+        .info span {
+            font-weight: 600;
+        }
+
+        .industry {
+            margin-top: 20px;
+            background: #ffffff;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 5px solid #4caf50;
+        }
+
+        .progress-bar {
+            background: #ddd;
+            border-radius: 20px;
+            height: 25px;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .progress {
+            background: #4caf50;
+            width: 50%;
+            height: 100%;
+            border-radius: 20px;
+            text-align: center;
+            color: white;
+            font-weight: 600;
+        }
+
+        audio {
+            margin-top: 15px;
+            width: 100%;
+        }
+
+        footer {
+            text-align: center;
+            padding: 15px;
+            font-size: 13px;
+            color: #555;
+        }
+
+        @media (max-width: 600px) {
+            input[type="file"], input[type="text"] {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>🌿 Agro Waste to AI</h1>
+    <p>Detecting Value from Farm Waste for Circular Economy</p>
+</header>
+
+<div class="container">
+
+    <form method="POST" enctype="multipart/form-data">
+        <div class="upload-box">
+            <h3>📸 Upload Agro Waste Image</h3>
+            <input type="file" name="image" accept="image/*" required><br>
+            <input type="text" name="location" placeholder="Enter your location" required><br>
+            <button type="submit">🔍 Analyze Waste</button>
+        </div>
+    </form>
+
+    {% if result %}
+    <div class="result">
+        <h2>✅ Analysis Result</h2>
+
+        <img src="{{ result.image }}" alt="Uploaded Image">
+
+        <p><span>Detected Waste:</span> {{ result.label }}</p>
+        <p><span>Recycling Recommendation:</span> {{ result.recycle }}</p>
+        <p><span>Estimated CO₂ Reduction:</span> {{ result.co2 }}</p>
+
+        <!-- CO2 Progress Bar -->
+        <h3>🌱 CO₂ Savings</h3>
+        <p><b>Reduction Achieved:</b> 50%</p>
+        <div class="progress-bar">
+            <div class="progress">50%</div>
+        </div>
+
+        <!-- CO2 Chart -->
+        <h3>📊 CO₂ Emission Comparison</h3>
+        <canvas id="co2Chart" height="200"></canvas>
+
+        <!-- Industries -->
+        <div class="industry">
+            <h3>🏭 Suitable Industries Near {{ result.location }}</h3>
+            <ul>
+                {% for ind in result.industries %}
+                <li>{{ ind }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <!-- Telugu Voice -->
+        <h3>🔊 Telugu Voice Explanation</h3>
+        <audio controls autoplay>
+            <source src="{{ result.voice }}" type="audio/mpeg">
+        </audio>
+    </div>
+    {% endif %}
+
+</div>
+
+<footer>
+    © 2025 Agro Waste to AI | Circular Economy & Sustainability
+</footer>
+
+{% if result %}
+<script>
+const ctx = document.getElementById('co2Chart');
+
+new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: ['Burning Waste', 'Recycling Waste'],
+        datasets: [{
+            label: 'CO₂ Emissions (kg)',
+            data: [3.0, 1.5],
+            backgroundColor: ['#e53935', '#4caf50']
+        }]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            legend: { display: false }
+        },
+        scales: {
+            y: { beginAtZero: true }
+        }
+    }
+});
+</script>
+{% endif %}
+
+</body>
+</html>

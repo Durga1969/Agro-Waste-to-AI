@@ -1,0 +1,8 @@
+Create `labels.txt`:
+```
+banana_peel
+sugarcane_bagasse
+coconut_shell
+corn_husk
+fruit_waste
+```

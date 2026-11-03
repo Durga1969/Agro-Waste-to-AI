@@ -1,0 +1,6 @@
+
+flask
+pillow
+numpy
+tensorflow==2.16.2
+gTTS
