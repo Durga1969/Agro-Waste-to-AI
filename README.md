@@ -1,5 +1,5 @@
 # Agro-Waste-to-AI
-### Transforming Agricultural Waste into Smart Resources for a Sustainable Circular Economy
+### Detecting the Value from Farm Waste for Circular Economy
 
 ## Project Overview
 Agro-Waste-to-AI is an AI-powered system designed to identify agricultural waste and suggest useful ways to convert it into valuable resources.
